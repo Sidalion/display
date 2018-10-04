@@ -32,9 +32,10 @@ def get_new_value(msg):
     data = ser.readline()
     data2 = data.decode("UTF-8")
     position_case = data2.find('bat')
-
-    cases = int(data2[position_case + 5:position_case + 6])
-
+    try:
+        cases = int(data2[position_case + 5:position_case + 6])
+    except:
+        cases = 2
     position_Ah1 = data2.find('Ah1')
     position_Ah2 = data2.find('Ah2')
 
@@ -44,8 +45,8 @@ def get_new_value(msg):
         Ah2 = 0.0
     else:
         try:
-            Ah1 = float((float(data2[position_Ah1 + 5:position_Ah1 + 10])/20)*100)
-            Ah2 = float((float(data2[position_Ah2 + 5:position_Ah2 + 10])/20)*100)
+            Ah1 = float((float(data2[position_Ah1 + 5:position_Ah1 + 10])/72)*100)
+            Ah2 = float((float(data2[position_Ah2 + 5:position_Ah2 + 10])/72)*100)
         except:
             Ah1 = 0.0
             Ah2 = 0.0
