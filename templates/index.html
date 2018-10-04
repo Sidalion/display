@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="UTF-8">
+      <title>Synchronized Slider</title>
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
+      <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
+      <script type="text/javascript">
+         $(document).ready(function() {
+
+            function hideAllCases(parameters){
+                $(".case1").hide();
+                $(".case2").hide();
+                $(".case3").hide();
+                for (i=1;i<=6;i++) {
+                    $(".rectangle_"+ i).hide();
+                }
+                for (i=1;i<=6;i++) {
+                    $(".rectangle_down_"+ i).hide();
+                }
+            }
+            hideAllCases();
+           // sending a connect request to the server.
+           var socket = io.connect('http://localhost:5000');
+
+           socket.on('after connect', function(msg) {
+                if (msg.data.case === 1) {
+                    hideAllCases();
+                    $(".case1").show();
+                 } else if (msg.data.case === 2) {
+                    hideAllCases();
+                     $(".case2").show();
+                 } else if (msg.data.case === 3) {
+                    hideAllCases();
+                     $(".case3").show();
+                 }
+               console.log('After connect', msg);
+
+               var tower_up = parseInt(msg.data.per1/16.66);
+               if (tower_up == 6) {
+                  tower_up = tower_up - 1;
+               }
+                for (i=1;i<=tower_up+1;i++) {
+                    $(".rectangle_"+ i).show();
+                    if (tower_up < 2) {
+                      $(".rectangle_"+ i).css("background-color", "red");
+                    } else if (tower_up == 2) {
+                        $(".rectangle_"+ i).css("background-color", "yellow");
+                    } else {
+                        $(".rectangle_"+ i).css("background-color", "green");
+                    }
+                }
+               var tower_down = parseInt(msg.data.per2/16.66);
+               if (tower_down == 6) {
+                  tower_down = tower_down - 1;
+               }
+                for (i=1;i<=tower_down+1;i++) {
+                    $(".rectangle_down_"+ i).show();
+                    if (tower_down < 2) {
+                      $(".rectangle_down_"+ i).css("background-color", "red");
+                    } else if (tower_down == 2) {
+                        $(".rectangle_down_"+ i).css("background-color", "yellow");
+                    } else {
+                        $(".rectangle_down_"+ i).css("background-color", "green");
+                    }
+                }
+
+               console.log(tower_up);
+               socket.emit('get new value','check');
+           });
+         });
+      </script>
+       <style>
+        .rectangle {
+          height: 41px;
+          width: 7px;
+          block: inline;
+        }
+        .rectangle_1 {
+           position: absolute;
+           top: 174px;
+           left: 319px;
+        }
+        .rectangle_2 {
+           position: absolute;
+           top: 174px;
+           left: 308px;
+        }
+        .rectangle_3 {
+           position: absolute;
+           top: 174px;
+           left: 297px;
+        }
+        .rectangle_4 {
+           position: absolute;
+           top: 174px;
+           left: 286px;
+        }
+        .rectangle_5 {
+           position: absolute;
+           top: 174px;
+           left: 275px;
+        }
+        .rectangle_6 {
+           position: absolute;
+           top: 174px;
+           left: 264px;
+        }
+
+        .rectangle_down_1 {
+           position: absolute;
+           top: 266px;
+           left: 319px;
+        }
+        .rectangle_down_2 {
+           position: absolute;
+           top: 266px;
+           left: 308px;
+        }
+        .rectangle_down_3 {
+           position: absolute;
+           top: 266px;
+           left: 297px;
+        }
+        .rectangle_down_4 {
+           position: absolute;
+           top: 266px;
+           left: 286px;
+        }
+        .rectangle_down_5 {
+           position: absolute;
+           top: 266px;
+           left: 275px;
+        }
+        .rectangle_down_6 {
+           position: absolute;
+           top: 266px;
+           left: 264px;
+        }
+
+    </style>
+   </head>
+   <body style="background-image: url('../static/bg.png'); background-repeat:no-repeat;background-size:cover;">
+       <div style="position: absolute; top: 168px; left: 235px;">
+           <img src="../static/battery.png" style="width: 100px"/>
+       </div>
+       <div style="position: absolute; top: 260px; left: 235px;">
+           <img src="../static/battery.png" style="width: 100px"/>
+       </div>
+       <div class="silo_up" >
+           <div class="rectangle rectangle_1" ></div>
+           <div class="rectangle rectangle_2" ></div>
+           <div class="rectangle rectangle_3" ></div>
+           <div class="rectangle rectangle_4" ></div>
+           <div class="rectangle rectangle_5" ></div>
+           <div class="rectangle rectangle_6" ></div>
+       </div>
+
+       <div class="silo_down" >
+           <div class="rectangle rectangle_down_1" ></div>
+           <div class="rectangle rectangle_down_2" ></div>
+           <div class="rectangle rectangle_down_3" ></div>
+           <div class="rectangle rectangle_down_4" ></div>
+           <div class="rectangle rectangle_down_5" ></div>
+           <div class="rectangle rectangle_down_6" ></div>
+       </div>
+
+       <div class="case1">
+           <img src="../static/gif/case1_1.gif" style="position: absolute;width: 50px;top: 178px;left: 339px;"/>
+           <img src="../static/gif/case1.gif" style="position: absolute;width: 262px;top: 182px;left: 290px;"/>
+       </div>
+       <div class="case2">
+           <img src="../static/gif/case1_1.gif" style="position: absolute; width: 50px; top: 178px;left: 339px;"/>
+      </div>
+      <div class="case3">
+          <img src="../static/gif/case3_1.gif" style="position: absolute;width: 54px;top: 276px;left: 340px;"/>
+          <img src="../static/gif/case3.gif" style="position: absolute; width: 272px;
+    top: 115px;
+    left: 270px;"/>
+      </div>
+   </body>
+</html>
