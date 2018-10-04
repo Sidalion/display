@@ -4,5 +4,5 @@
 
 cd /
 cd home/pi/Display/display
-sudo python skt.py
+sudo python3 skt.py
 cd /
